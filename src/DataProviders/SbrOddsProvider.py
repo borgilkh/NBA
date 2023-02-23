@@ -10,9 +10,8 @@ class SbrOddsProvider:
 
     def __init__(self, sportsbook="fanduel"):
         
-        sb = Scoreboard(sport="NBA")
-        self.games = sb.games if hasattr(sb, 'games') else []
-        self.sportsbook = sportsbook
+       self.games = Scoreboard(sport="NBA").games
+       self.sportsbook = sportsbook
 
     
     def get_odds(self):

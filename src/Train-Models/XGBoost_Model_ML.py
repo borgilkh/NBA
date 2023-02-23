@@ -1,4 +1,3 @@
-import sqlite3
 import pandas as pd
 import xgboost as xgb
 from sklearn.metrics import accuracy_score
@@ -6,13 +5,9 @@ from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import numpy as np
 
-dataset = "dataset_2012-23"
-con = sqlite3.connect("../../Data/dataset.sqlite")
-data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
-con.close()
-
+data = pd.read_excel('../../Datasets/DataSet-2021-22.xlsx')
 margin = data['Home-Team-Win']
-data.drop(['Score', 'Home-Team-Win', 'TEAM_NAME', 'Date', 'TEAM_NAME.1', 'Date.1', 'OU-Cover', 'OU'],
+data.drop(['Score', 'Home-Team-Win', 'Unnamed: 0', 'TEAM_NAME', 'Date', 'TEAM_NAME.1', 'Date.1', 'OU-Cover', 'OU'],
           axis=1, inplace=True)
 
 data = data.values
@@ -40,6 +35,6 @@ for x in tqdm(range(100)):
     for z in predictions:
         y.append(np.argmax(z))
 
-    acc = round(accuracy_score(y_test, y)*100, 1)
+    acc = round(accuracy_score(y_test, y), 3) * 100
     print(acc)
     model.save_model('../../Models/XGBoost_{}%_ML-2.json'.format(acc))
